@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Câu hỏi yêu thương</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      margin: 0;
+      background: white;
+    }
+    .hidden { display: none; }
+    .login-image {
+      width: 100%;
+      max-width: 300px;
+      margin: 10px auto;
+      display: block;
+      border-radius: 10px;
+    }
+    #love-message {
+      display: none;
+      height: 100vh;
+      font-size: 40px;
+      font-weight: bold;
+      color: crimson;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Phần đăng nhập -->
+  <div id="login-container">
+    <h2>Đăng nhập lần <span id="login-number">1</span></h2>
+    <img id="login-image" class="login-image" src="img/1.jpg" alt="Login Image">
+    <form id="login-form">
+      <input type="text" id="username" placeholder="Tên đăng nhập" required>
+      <input type="password" id="password" placeholder="Mật khẩu" required>
+      <button type="submit">Đăng nhập</button>
+      <p id="login-error" style="color:red;"></p>
+    </form>
+  </div>
+
+  <!-- Thông điệp yêu thương -->
+  <div id="love-message">Anh yêu em ❤️</div>
+
+  <script>
+    const validAccounts = {
+      '454': '2402',
+      '79': '0403',
+      'capvabinhnuoc': 'gung',
+      'xanhduong': 'quycau',
+      'nguyenvanhoangphuc': 'co'
+    };
+
+    const loginImages = [
+      "img/1.jpg",
+      "img/2.jpg",
+      "img/3.jpg",
+      "img/4.jpg",
+      "img/5.jpg"
+    ];
+
+    let loggedUsers = [];
+    let loginAttempt = 0;
+
+    const loginContainer = document.getElementById('login-container');
+    const loginNumberSpan = document.getElementById('login-number');
+    const loginImage = document.getElementById('login-image');
+    const loginError = document.getElementById('login-error');
+    const loveMessage = document.getElementById('love-message');
+
+    function updateLoginImage() {
+      loginNumberSpan.textContent = loginAttempt + 1;
+      loginImage.src = loginImages[loginAttempt] || "img/1.jpg";
+    }
+
+    updateLoginImage();
+
+    document.getElementById('login-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
+
+      if (validAccounts[username] === password) {
+        if (!loggedUsers.includes(username)) {
+          loggedUsers.push(username);
+          loginAttempt++;
+          loginError.textContent = "";
+          document.getElementById('login-form').reset();
+          updateLoginImage();
+
+          if (loggedUsers.length >= 5) {
+            showLoveMessage();
+          }
+        } else {
+          loginError.textContent = "Người dùng đã đăng nhập rồi.";
+        }
+      } else {
+        loginError.textContent = "Tên đăng nhập hoặc mật khẩu không đúng!";
+      }
+    });
+
+    function showLoveMessage() {
+      loginContainer.classList.add('hidden');
+      loveMessage.style.display = 'flex';
+    }
+  </script>
+
+</body>
+</html>
